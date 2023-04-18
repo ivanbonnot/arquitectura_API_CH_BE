@@ -1,37 +1,36 @@
-const getDao = require('../DAO/factory')
+const factoryDAO = require('../DAO/factory')
 
+const addNewProductDTO = async( prod ) => {
+  console.log( prod )
+  const products = await (factoryDAO()).mongoDAO
+  await products.saveProduct( prod )
+  return 
+}
 
-const getAllProductsDto = async() => {
-  const products = await (await getDao()).products
-  const allProducts = await products.getAll()
+const getProductsDTO = async() => {
+  const products = await(factoryDAO()).mongoDAO
+  const allProducts = await products.getProducts()
   return allProducts
 }
 
-const getProductByIdDto = async( id ) => {
-  const products = await (await getDao()).products
-  const productById = await products.getById( id )
+const getProductByIdDTO = async( id ) => {
+  const products = await (factoryDAO()).mongoDAO
+  const productById = await products.getProductById( id )
   return productById
 }
 
-const delProductByIdDto = async( id ) => {
-  const products = await (await getDao()).products
-  await products.deleteById( id )
+const deleteProductDTO = async( id ) => {
+  const products = await (factoryDAO()).mongoDAO
+  await products.deleteProduct( id )
   return 
 }
 
-const delAllProductsDto = async() => {
-  const products = await (await getDao()).products
-  await products.deleteAll()
-  return 
-}
-
-const addNewProductDto = async( item ) => {
-  console.log( item )
-  const products = await (await getDao()).products
-  await products.add( item )
+const deleteAllProductsDTO = async() => {
+  const products = await (factoryDAO()).mongoDAO
+  await products.deleteAllProducts()
   return 
 }
 
 
-module.exports = { getAllProductsDto, getProductByIdDto, delProductByIdDto, delAllProductsDto, addNewProductDto }
+module.exports = { getProductsDTO, getProductByIdDTO, deleteProductDTO, deleteAllProductsDTO, addNewProductDTO }
 

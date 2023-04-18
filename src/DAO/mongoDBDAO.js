@@ -1,7 +1,7 @@
 const { productModel, cartModel, userModel, chatModel } = require("../models/mongoDBModels")
 
 
-class ControllerMongoDb {
+class mongoDBDAO {
 
     //___USER__//
 
@@ -11,9 +11,11 @@ class ControllerMongoDb {
         console.log("guardado", user)
     };
 
-    getAll = async () => await userModel.find({});
+    getUsers = async () => await userModel.find({});
 
-    getUser = async (email) => await userModel.findOne({ email: email });
+    getUserBy = async (email) => await userModel.findOne({ email: email });
+
+    deleteUser = async (id) => await userModel.deleteOne({ _id: id });
 
     updateUser = async (id, userToUpdate) => {
         return await userModel.updateOne(
@@ -21,9 +23,6 @@ class ControllerMongoDb {
             { $set: { ...userToUpdate } }
         );
     };
-
-    deleteUser = async (id) => await userModel.deleteOne({ _id: id });
-
 
     //___PRODUCT___//
 
@@ -37,14 +36,16 @@ class ControllerMongoDb {
 
     getProductById = async (id) => await productModel.findOne({ _id: id });
 
+    deleteProduct = async (id) => await productModel.deleteOne({ _id: id });
+
+    deleteAllProducts = async ()=> await productModel.deleteMany();
+
     updateProduct = async (id, productToUpdate) => {
         return await productModel.updateOne(
             { _id: id },
             { $set: { ...productToUpdate } }
         );
     };
-
-    deleteProduct = async (id) => await productModel.deleteOne({ _id: id });
 
 
     //___CART___//
@@ -134,9 +135,4 @@ class ControllerMongoDb {
     }
 }
 
-
-
-
-const dbController = new ControllerMongoDb();
-
-module.exports = dbController;
+module.exports = mongoDBDAO;

@@ -1,15 +1,11 @@
-const MongoProductDao = require('./mongoProductDao')
+const mongoDBDAO = require("./mongoDBDAO");
 
-let productsDao = undefined
+let mongoDAO
 
-const getDao = async() => {
-  if( !productsDao ) {
-      productsDao = await new MongoProductDao()
-  }
-  return {
-    products: productsDao
-  }
-}
+const factoryDAO = () => {
 
+  return mongoDAO = new mongoDBDAO();
 
-module.exports = getDao
+};
+
+module.exports = factoryDAO;

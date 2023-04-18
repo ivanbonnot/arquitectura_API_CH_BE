@@ -1,17 +1,18 @@
-const { users } = require('../DAO/mongoUserDao')
+const factoryDAO = require('../DAO/factory')
 
 
-const checkUserDto = async( email, password ) => {
-  const userCheck = await users.checkUser( email, password )
+const checkUserDTO = async( email ) => {
+  const users = await (factoryDAO()).mongoDAO
+  const userCheck = await users.getUserBy( email )
   return userCheck
 }
 
-const addUserDto = async( email, password ) => {
-  const newUser = await users.addUser( email, password )
+const addUserDTO = async( user) => {
+  const users = await (factoryDAO()).mongoDAO
+  const newUser = await users.saveUser( user )
   return newUser
 }
 
 
-
-module.exports = { checkUserDto, addUserDto }
+module.exports = { checkUserDTO, addUserDTO }
 
