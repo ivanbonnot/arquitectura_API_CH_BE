@@ -1,16 +1,18 @@
-const { chats } = require('../DAO/mongoChatDao')
+const factoryDAO = require('../DAO/factory')
 
 
-const getAllChatsDto = async() => {
-  const allChats = await chats.getAll()
+const getAllChatsDTO = async() => {
+  const chats =  factoryDAO()
+  const allChats = await chats.getAllChats()
   return allChats
 }
 
-const addChatMsgDto = async( message ) => {
-  await chats.add( message )
+const addChatDTO = async( message ) => {
+  const chats = factoryDAO()
+  await chats.saveChat( message )
   return 
 }
 
 
 
-module.exports = { getAllChatsDto, addChatMsgDto }
+module.exports = { getAllChatsDTO, addChatDTO }

@@ -37,7 +37,7 @@ productsRouter.post('/', async (req, res) => {
             stock
         };
 
-        newProductController(product)
+        await newProductController(product)
         res.json('Guardado')
 
     } else {

@@ -35,7 +35,8 @@ const baseProcces = () => {
     const httpServer = new HTTPServer(app);
     const io = new IOServer(httpServer);
 
-    const { newProductController, getAllProductsController, getProductByIdController, delProductByIdController, updateProductController } = require('../src/controllers/productsController')
+    const {  getAllProductsController, newProductController } = require('../src/controllers/productsController')
+    const { addChatController, getAllChatsController} = require('../src/controllers/chatsController')
 
     //Settings
     app.set('port', process.env.PORT || 8080)
@@ -97,18 +98,18 @@ const baseProcces = () => {
 
         // actualizacion de productos
         socket.on('update', async producto => {
-            dbController.saveProduct(producto)
+            newProductController(producto)
             io.sockets.emit('productos', await getAllProductsController());
         })
 
         // carga inicial de mensajes
-        socket.emit('mensajes', await dbController.getAllChats());
+        socket.emit('mensajes', await getAllChatsController());
 
         // actualizacion de mensajes
         socket.on('nuevoMensaje', async mensaje => {
             mensaje.date = new Date().toLocaleString()
-            await dbControllersaveChat(mensaje)
-            io.sockets.emit('mensajes', await dbController.getAllChats());
+            addChatController(mensaje)
+            io.sockets.emit('mensajes', await getAllChatsController());
         })
     });
 
