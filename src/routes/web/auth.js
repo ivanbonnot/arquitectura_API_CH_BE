@@ -1,13 +1,10 @@
 const { Router } = require('express')
 const flash = require('connect-flash');
-
 const path = require('path');
-const User = require('../../class/User')
-const dbController = require('../../DAO/mongoDAO')
-
 const passport = require('passport');
-require('../../controllers/login/login');
-require('../../controllers/login/singup');
+
+const { checkUserController, newUserController } = require('../../controllers/usersControler')
+require('../../middleware/auth');
 
 const authWebRouter = Router()
 authWebRouter.use(flash())
@@ -47,7 +44,7 @@ authWebRouter.post('/register', passport.authenticate('register', { failureRedir
     req.session.username = req.user.username;
     const { username, email, password, address, phone, avatar } = req.body;
 
-    const user = await dbController.getUser(email)
+    const user = await checkUserController(email)
 
     if (user) {
         console.log("usuario existente ")
@@ -63,7 +60,7 @@ authWebRouter.post('/register', passport.authenticate('register', { failureRedir
             cartId: cart._id,
         }
 
-        dbController.saveUser(newUser);
+        await newUserController( newUser )
     }
 
     res.redirect('/login');

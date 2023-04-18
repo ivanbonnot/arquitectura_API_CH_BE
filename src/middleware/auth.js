@@ -17,7 +17,7 @@ passport.deserializeUser(function (email, done) {
 
 passport.use('login', new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
     const user = users.find(user => user.email === email && compareSync(password, user.password));
-    const usersDB = await checkUserController(email, password)
+    const usersDB = await checkUserController(email)
 
     if (usersDB) {
         let userMongoDB = []

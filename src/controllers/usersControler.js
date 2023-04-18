@@ -1,24 +1,12 @@
-const { checkUserDTO, addUserDTO } = require('../DTO/userDto')
+const { checkUserDTO, addUserDTO } = require('../DTO/usersDTO')
 
-
-const validateEmail = ( email ) => {
-  const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-  return email.match(mailformat) !== null
-}
-
-
-const checkUserController = async( email, password ) => {
-  const checkUser = await checkUserDTO( email, password )
+const checkUserController = async( email ) => {
+  const checkUser = await checkUserDTO( email )
   return checkUser
 }
 
-
-const newUserController = async ( email, password ) => {
-  if ( validateEmail( email ) & password ) {
-    await addUserDTO ( email, password )
-    return true
-  }
-  return false  
+const newUserController = async ( user ) => {
+    await addUserDTO ( user )
 }
 
 module.exports = { checkUserController, newUserController }

@@ -1,13 +1,12 @@
 const { Router } = require("express")
-const Product = require("../../class/Product")
-const dbController = require("../../dataAccessObj/mongoDA")
+const { newProductController, getAllProductsController, getProductByIdController, delProductByIdController } = require('../../controllers/productsController')
 
 const productsRouter = Router();
 
 const adm = true
 
 productsRouter.get('/', async (req, res) => {
-    const productos = await dbController.getProducts();
+    const productos = await getAllProductsController()
 
     res.json(productos);
 })
@@ -15,7 +14,7 @@ productsRouter.get('/', async (req, res) => {
 
 productsRouter.get('/:id', async (req, res) => {
     const { id } = req.params
-    const productById = await dbController.getProductById(id)
+    const productById = await getProductByIdController(id)
     console.log(id)
     if (productById) {
         res.json(productById)
@@ -29,16 +28,16 @@ productsRouter.post('/', async (req, res) => {
     if (adm) {
         const { title, description, code, thumbnail, price, stock } = req.body;
 
-        const product = new Product(
+        const product = {
             title,
             description,
             code,
             thumbnail,
             price,
             stock
-        );
+        };
 
-        dbController.saveProduct(product)
+        newProductController(product)
         res.json('Guardado')
 
     } else {
@@ -52,16 +51,16 @@ productsRouter.put('/:id', async (req, res) => {
         const { id } = req.params
         const { title, description, code, thumbnail, price, stock } = req.body;
 
-        const productUpdate = new Product(
+        const productUpdate = {
             title,
             description,
             code,
             thumbnail,
             price,
             stock
-        );
+        };
 
-        const productById = await dbController.getProductById(id)
+        const productById = await getProductByIdController(id)
 
         if (productById) {
             await dbController.updateProduct(id, productUpdate)

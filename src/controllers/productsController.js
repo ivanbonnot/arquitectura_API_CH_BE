@@ -1,4 +1,4 @@
-const { getProductsDTO, getProductByIdDTO, deleteProductDTO, addNewProductDTO } = require('../DTO/productsDTO')
+const { getProductsDTO, getProductByIdDTO, deleteProductDTO, addNewProductDTO, updateProductDTO } = require('../DTO/productsDTO')
 
 
 const newProductController = async ( productToAdd ) => {
@@ -16,10 +16,15 @@ const getProductByIdController = async( id ) => {
   return product
 }
 
+const updateProductController = async ( id, productToUpdate) => {
+  const prodToUpd = await updateProductDTO( id, productToUpdate)
+  return prodToUpd
+}
+
 const delProductByIdController = async( id ) => {
   await deleteProductDTO( id )
   return
 }
 
 
-module.exports = { newProductController, getAllProductsController, getProductByIdController, delProductByIdController }
+module.exports = { newProductController, getAllProductsController, getProductByIdController, delProductByIdController, updateProductController }

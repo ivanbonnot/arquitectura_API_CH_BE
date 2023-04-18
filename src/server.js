@@ -35,7 +35,7 @@ const baseProcces = () => {
     const httpServer = new HTTPServer(app);
     const io = new IOServer(httpServer);
 
-    const dbController = require('./dataAccessObj/mongoDA');
+    const { newProductController, getAllProductsController, getProductByIdController, delProductByIdController, updateProductController } = require('../src/controllers/productsController')
 
     //Settings
     app.set('port', process.env.PORT || 8080)
@@ -93,12 +93,12 @@ const baseProcces = () => {
         console.log('Nuevo cliente conectado!');
 
         // carga inicial de productos
-        socket.emit('productos', await dbController.getProducts());
+        socket.emit('productos', await getAllProductsController());
 
         // actualizacion de productos
         socket.on('update', async producto => {
             dbController.saveProduct(producto)
-            io.sockets.emit('productos', await dbController.getProducts());
+            io.sockets.emit('productos', await getAllProductsController());
         })
 
         // carga inicial de mensajes
